@@ -1,0 +1,75 @@
+{
+  '_request': <WSGIReques:GET'/organization/task/144/'>,
+  'parsers': [
+    <rest_framework.parsers.JSONParser
+    object
+    at
+    0x00000220FF4234E0>,
+    <rest_framework.parsers.FormParser
+    object
+    at
+    0x00000220FF4237F0>,
+    <rest_framework.parsers.MultiPartParser
+    object
+    at
+    0x00000220FF423EF0>
+  ],
+  'authenticators': [
+    <rest_framework.authentication.TokenAuthentication
+    object
+    at
+    0x00000220FF4230B8>
+  ],
+  'negotiator': <rest_framework.negotiation.DefaultContentNegotiation
+  object
+  at
+  0x00000220FF4236D8>,
+  'parser_context': {
+    'view': <Organization.views.TaskRetrieveDeleteView
+    object
+    at
+    0x00000220FF4C89B0>,
+    'args': (),
+    'kwargs': {
+      'pk': 144
+    },
+    'request': <rest_framework.request.Request
+    :
+    GET
+    '/organization/task/144/'
+    >,
+    'encoding': 'utf-8'
+  },
+  '_data': <class
+  'rest_framework.request.Empty'
+  >,
+  '_files': <class
+  'rest_framework.request.Empty'
+  >,
+  '_full_data': <class
+  'rest_framework.request.Empty'
+  >,
+  '_content_type': <class
+  'rest_framework.request.Empty'
+  >,
+  '_stream': <class
+  'rest_framework.request.Empty'
+  >,
+  'accepted_renderer': <rest_framework.renderers.JSONRenderer
+  object
+  at
+  0x00000220FF423668>,
+  'accepted_media_type': 'application/json',
+  'version': None,
+  'versioning_scheme': None,
+  '_authenticator': <rest_framework.authentication.TokenAuthentication
+  object
+  at
+  0x00000220FF4230B8>,
+  '_user': <Account
+  :
+  devtestuser@gmail.com>,
+  '_auth': <Token
+  :
+  333f00c8da3a07d66a5f1f69c9fd748af60273ca>
+}
