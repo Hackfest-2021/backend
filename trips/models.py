@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from account.models import Account
 from alerts.models import Alerts
 
@@ -21,6 +24,12 @@ class TripAlerts(models.Model):
     trip = models.ForeignKey(Trips, on_delete=models.CASCADE, db_column="trip")
 
 #     todo on Trip Alert save send that alert to all trip passengers
+# @receiver(post_save, sender=TripAlerts)
+# def update_stock(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         passengers = TripPassengers.objects.filter(trip__id=instance.trip.id)
+#
+
 
 class PassengerAlerts(models.Model):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)

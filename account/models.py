@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-
+from fcm_django.models import FCMDevice
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
@@ -51,6 +51,7 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    fcm_device = models.ForeignKey(FCMDevice, on_delete=models.CASCADE, db_column="fcm_device")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

@@ -1,3 +1,4 @@
+from fcm_django.api.rest_framework import FCMDeviceSerializer
 from rest_framework import serializers
 from account.models import Account, Roles
 from django.contrib.auth.password_validation import validate_password
@@ -31,6 +32,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    fcm_device = FCMDeviceSerializer(read_only=False)
+
     class Meta:
         model = Account
         depth = 1

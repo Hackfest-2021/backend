@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from firebase_admin import initialize_app
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-+lh9hs+jol=gp&$_gbyox%j&!civh11k)y^5&90if2)v@cnwvr
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     "alerts",
+    "fcm_django",
     "trips"
 
 ]
@@ -89,8 +89,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hackfest.wsgi.application'
 ASGI_APPLICATION = 'hackfest.asgi.application'
 
-
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -106,7 +104,6 @@ DATABASES = {
         'PORT': '3306'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -126,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -139,7 +135,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -157,3 +152,8 @@ CHANNEL_LAYERS = {
     }
 }
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+FIREBASE_APP = initialize_app()
+FCM_DJANGO_SETTINGS = {
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+}
