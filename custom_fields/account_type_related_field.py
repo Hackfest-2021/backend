@@ -5,8 +5,6 @@ from rest_framework import serializers
 from account.models import Account
 from account.serializers import AccountSerializer
 from trips.models import Trips
-
-
 class AccountTypeField(serializers.RelatedField):
 
     def get_queryset(self):
