@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     "alerts",
+    "trips"
 
 ]
 
@@ -64,6 +65,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'hackfest.urls'
+CSRF_COOKIE_SECURE = False  # True
 
 TEMPLATES = [
     {

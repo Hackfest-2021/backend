@@ -18,6 +18,6 @@ class AlertType(models.Model):
 class Alerts(models.Model):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     alert_type = models.ForeignKey(AlertType, on_delete=models.SET_NULL, null=True, db_column="alert_type")
-    trip_id = models.CharField(max_length=250, default='trip_1')
     alert_severity = models.FloatField(default=0.5)
+    resolved = models.BooleanField(default=False)
 
