@@ -35,7 +35,12 @@ def send_fcm_notifications(sender, instance=None, created=False, **kwargs):
             passenger_alert.passenger = trip_p.passenger
             passenger_alert.save()
             trip_p.passenger.fcm_device.send_message(
-                Message(notification=Notification(title="Test notification", body="Test notification body"))
+                Message(
+                    data={
+                        "alert_to_poll_on": f"{passenger_alert.id}",
+
+                    },
+                    notification=Notification(title="Test notification", body="Test notification body"))
             )
 
 class PassengerAlerts(models.Model):
