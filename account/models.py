@@ -51,7 +51,7 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    fcm_device = models.ForeignKey(FCMDevice, on_delete=models.SET_NULL, null=True, db_column="fcm_device")
+    fcm_device = models.ForeignKey(FCMDevice, on_delete=models.SET_NULL,blank=True, null=True, db_column="fcm_device",default=None)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

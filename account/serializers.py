@@ -38,12 +38,14 @@ class FCMDeviceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AccountSerializer(WritableNestedModelSerializer):
-    fcm_device = FCMDeviceSerializer(read_only=False)
+    fcm_device = FCMDeviceSerializer(read_only=False,required=False)
 
     class Meta:
         model = Account
         depth = 1
         exclude = ['password', 'is_staff', 'last_login', 'date_joined']
+
+
 
 
 class AccountUpdateSerializer(serializers.ModelSerializer):

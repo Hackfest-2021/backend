@@ -1,12 +1,15 @@
 import json
+
+from django.forms import model_to_dict
 from drf_yasg.openapi import IN_PATH, Parameter, Schema
 from drf_yasg.utils import swagger_auto_schema
+from fcm_django.models import FCMDevice
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework import status, generics
 
 from account.serializers import RegistrationSerializer, AccountSerializer, ChangePasswordSerializer, \
-    AccountUpdateSerializer, RolesSerializer
+    AccountUpdateSerializer, RolesSerializer, FCMDeviceSerializer
 from rest_framework.authtoken.models import Token
 from account.models import Account, Roles
 from rest_framework.decorators import api_view, permission_classes
@@ -14,18 +17,31 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import os
 
 
+class FCMDeviceSerializerrequest(object):
+    pass
+
+
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         print(request.data)
+        fcm = FCMDevice()
+        fcm.registration_id = request.data["fcm_device"]["registration_id"]
+        fcm.type = "android"
+        fcm.save()
         print('ENV', os.environ.get('ENV'))
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
+        # print("ssss")
         serializer.is_valid(raise_exception=True)
+
         user = serializer.validated_data['user']
+        user.fcm_device = fcm
+        user.save()
+
         token, created = Token.objects.get_or_create(user=user)
 
-
+        print(model_to_dict(user))
 
         return Response({
             'token': token.key,
@@ -39,7 +55,7 @@ class CustomAuthToken(ObtainAuthToken):
 # @swagger_auto_schema(query_serializer=RegistrationSerializer)
 def registration_view(request):
     if request.method == 'POST':
-        serializer = AccountSerializer(data=request.data)
+        serializer = RegistrationSerializer(data=request.data)
         data = {}
         if serializer.is_valid():
             account = serializer.save()
@@ -64,6 +80,7 @@ class ListCreateRolesView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = RolesSerializer
 
+
 class RetrieveUserView(generics.RetrieveAPIView):
     queryset = Account.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -75,8 +92,6 @@ class UpdateUserView(generics.UpdateAPIView):
     lookup_field = 'email'
     permission_classes = (IsAuthenticated,)
     serializer_class = AccountUpdateSerializer
-
-
 
 
 @api_view(['PUT', ])
@@ -101,8 +116,6 @@ def approve_pending_user_view(request):
                      method='get',
                      manual_parameters=[Parameter('email', IN_PATH, type='str', required=True)],
                      responses={'200': 'list of devices.'})
-
-
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def approvedUser_detail_view(request):
@@ -119,7 +132,6 @@ def approvedUser_detail_view(request):
         return Response(serializer.data)
 
 
-
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def nonapprovedUser_detail_view(request):
@@ -134,8 +146,6 @@ def nonapprovedUser_detail_view(request):
     if request.method == "GET":
         serializer = AccountSerializer(accounts, many=True)
         return Response(serializer.data)
-
-
 
 
 @api_view(['DELETE', ])
@@ -160,8 +170,6 @@ def user_delete_view(request, slug):
             cur_status = status.HTTP_400_BAD_REQUEST
 
         return Response(data=data, status=cur_status)
-
-
 
 
 @api_view(['GET', ])

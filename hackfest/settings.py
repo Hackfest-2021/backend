@@ -14,6 +14,8 @@ from pathlib import Path
 from firebase_admin import initialize_app
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from firebase_admin.credentials import Certificate
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -153,7 +155,7 @@ CHANNEL_LAYERS = {
 }
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
-FIREBASE_APP = initialize_app()
+FIREBASE_APP = initialize_app(credential=Certificate("safeti-23e65-firebase-adminsdk-w4q4f-fa6445eefc.json"))
 FCM_DJANGO_SETTINGS = {
     "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
 }
