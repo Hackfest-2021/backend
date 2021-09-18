@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import Account, UserConfig, Roles
+from account.models import Account, Roles
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -8,7 +8,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ['email', 'username', 'lastname', 'position', 'password', 'confirm_password']
+        fields = ['email', 'username', 'lastname', 'password', 'confirm_password']
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -18,7 +18,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=self.validated_data['email'],
             username=self.validated_data['username'],
             lastname=self.validated_data['lastname'],
-            position=self.validated_data['position'],
             # dob=self.validated_data['position'],
         )
         password = self.validated_data['password']
@@ -26,6 +25,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must match.'})
         account.set_password(password)
+        account.is_active = True
         account.save()
         return account
 
@@ -34,7 +34,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         depth = 1
-        exclude = ['password','is_staff','last_login','date_joined']
+        exclude = ['password', 'is_staff', 'last_login', 'date_joined']
 
 
 class AccountUpdateSerializer(serializers.ModelSerializer):
@@ -72,16 +72,6 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
         return instance
 
-
-class UserConfigSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserConfig
-        fields = "__all__"
-        depth = 1
-
-    def set_depth(self, depth):
-        self.Meta.depth = depth
-        return
 
 class RolesSerializer(serializers.ModelSerializer):
     class Meta:

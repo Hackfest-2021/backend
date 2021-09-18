@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 
 from account.serializers import RegistrationSerializer, AccountSerializer, ChangePasswordSerializer, \
-    AccountUpdateSerializer, UserConfigSerializer, RolesSerializer
+    AccountUpdateSerializer, RolesSerializer
 from rest_framework.authtoken.models import Token
 from account.models import Account, Roles
 from rest_framework.decorators import api_view, permission_classes
@@ -35,9 +35,6 @@ class CustomAuthToken(ObtainAuthToken):
         })
 
 
-@swagger_auto_schema(method='post',
-                     request_body=RegistrationSerializer,
-                     responses={'200': 'successfully registered new user.'})
 @api_view(['POST', ])
 # @swagger_auto_schema(query_serializer=RegistrationSerializer)
 def registration_view(request):
@@ -82,11 +79,6 @@ class UpdateUserView(generics.UpdateAPIView):
 
 
 
-@swagger_auto_schema(
-    operation_description='Approve  the pending registered user...Pass the email in postman request body',
-    method='put', request_body=Schema(type='str',
-                                      required=['email']),
-    responses={'200': 'successfully approved user.'})
 @api_view(['PUT', ])
 @permission_classes((IsAuthenticated,))
 def approve_pending_user_view(request):
@@ -111,9 +103,6 @@ def approve_pending_user_view(request):
                      responses={'200': 'list of devices.'})
 
 
-@swagger_auto_schema(operation_description='Show all approved users',
-                     method='get',
-                     responses={'200': 'list of users.'})
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def approvedUser_detail_view(request):
@@ -130,9 +119,7 @@ def approvedUser_detail_view(request):
         return Response(serializer.data)
 
 
-@swagger_auto_schema(operation_description='Show all non approved users ',
-                     method='get',
-                     responses={'200': 'list of users.'})
+
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def nonapprovedUser_detail_view(request):
@@ -149,17 +136,8 @@ def nonapprovedUser_detail_view(request):
         return Response(serializer.data)
 
 
-@swagger_auto_schema(operation_description='Assign a user to particular organization'
-                                           '....Pass the user email and Organization_name in postman request body',
-                     method='put',
-                     request_body=Schema(type='str', required=['email', 'Organization_name']),
-                     responses={'200': 'assign successfully'})
 
 
-@swagger_auto_schema(
-    operation_description='Delete the user.....replace {slug} with account id in url',
-    method='delete',
-    responses={'200': 'successfully deleted user.'})
 @api_view(['DELETE', ])
 @permission_classes((IsAuthenticated,))
 def user_delete_view(request, slug):

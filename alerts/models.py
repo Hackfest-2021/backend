@@ -9,7 +9,7 @@ class AlertType(models.Model):
     distracted = 'distracted'
     weapon = "weapon"
     alert_types = [
-        drowsy, un_authorized, distracted, weapon
+        (drowsy,drowsy), (un_authorized,un_authorized), (distracted,distracted), (weapon,weapon)
     ]
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     name = models.CharField(max_length=250, choices=alert_types)
@@ -19,3 +19,5 @@ class Alerts(models.Model):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     alert_type = models.ForeignKey(AlertType, on_delete=models.SET_NULL, null=True, db_column="alert_type")
     trip_id = models.CharField(max_length=250, default='trip_1')
+    alert_severity = models.FloatField(default=0.5)
+
