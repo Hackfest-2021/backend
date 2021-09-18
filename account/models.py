@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from fcm_django.models import FCMDevice
 from rest_framework.authtoken.models import Token
 
 class MyAccountManager(BaseUserManager):
@@ -37,15 +38,6 @@ class MyAccountManager(BaseUserManager):
 class Roles(models.Model):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     name = models.CharField(max_length=250,)
-
-class FCMDevice(models.Model):
-    id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
-    device_id = models.CharField(
-        blank=True,
-        null=True,
-        max_length=255,
-    )
-    registration_id = models.TextField(max_length=255)
 
 class Account(AbstractBaseUser):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
