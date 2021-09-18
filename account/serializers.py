@@ -1,6 +1,6 @@
-from fcm_django.api.rest_framework import FCMDeviceSerializer
+from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
-from account.models import Account, Roles
+from account.models import Account, Roles, FCMDevice
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -31,7 +31,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return account
 
 
-class AccountSerializer(serializers.ModelSerializer):
+class FCMDeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FCMDevice
+        depth = 1
+        fields = '__all__'
+
+class AccountSerializer(WritableNestedModelSerializer):
     fcm_device = FCMDeviceSerializer(read_only=False)
 
     class Meta:

@@ -39,7 +39,7 @@ class CustomAuthToken(ObtainAuthToken):
 # @swagger_auto_schema(query_serializer=RegistrationSerializer)
 def registration_view(request):
     if request.method == 'POST':
-        serializer = RegistrationSerializer(data=request.data)
+        serializer = AccountSerializer(data=request.data)
         data = {}
         if serializer.is_valid():
             account = serializer.save()

@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-from fcm_django.models import FCMDevice
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
@@ -39,6 +38,15 @@ class Roles(models.Model):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     name = models.CharField(max_length=250,)
 
+class FCMDevice(models.Model):
+    id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
+    device_id = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+    )
+    registration_id = models.TextField(max_length=255)
+
 class Account(AbstractBaseUser):
     id = models.AutoField(primary_key=True, db_column="id", auto_created=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
@@ -51,7 +59,7 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    fcm_device = models.ForeignKey(FCMDevice, on_delete=models.CASCADE, db_column="fcm_device")
+    fcm_device = models.ForeignKey(FCMDevice, on_delete=models.SET_NULL, null=True, db_column="fcm_device")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
