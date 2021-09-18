@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 
 from trips.models import Trips, TripPassengers, TripAlerts, PassengerAlerts
@@ -21,6 +22,11 @@ class CreateTripPassenger(generics.ListCreateAPIView):
 class CreateTripAlert(generics.ListCreateAPIView):
     queryset = TripAlerts.objects.all()
     serializer_class = TripAlertsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['alert__alert_type__id']
+    #
+    # def create(self, request, *args, **kwargs):
+    #     TripAlerts.objects.filter(alert__alert_type__id=)
 
 
 class CreatePassengerTripAlertFeedBack(generics.ListCreateAPIView):
