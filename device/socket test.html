@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    console.log('shakeeb')
+    const ws = new WebSocket("ws://localhost:8000/ws/");
+    ws.onopen = function(){
+        console.log("connected");
+        ws.send(JSON.stringify({
+              action: "subscribe_to_DeviceSettings",
+            request_id: new Date().getTime(),
+        }))
+
+    }
+    ws.onmessage = function (e) {
+        console.log(e)
+    }
+
+</script>
+</html>
